@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Grid, Button } from 'semantic-ui-react'
 import EventList from '../EventList/EventList';
 import EventForm from '../EventForm/EventForm';
+import cuid from "cuid";
+
 const events = [
     {
         id: '1',
@@ -59,10 +61,18 @@ export default class EventDashboard extends Component {
         isOpen: false
     }
     handleFormToggle = () => {
-        // use prvestate while toggling isopen is prevstate
+        // use prvestate while toggling (isopen) is prevstate
         this.setState(({ isOpen }) => ({
             isOpen: !isOpen
         }))
+    }
+    handleCreateEvent = (newEvent) => {
+        newEvent.id = cuid();
+        newEvent.hostPhotoURL = 'assets/user.png';
+        this.setState(({ events }) => ({
+            events: [...events, newEvent],
+            isOpen: false
+        }));
     }
     render() {
         const { events, isOpen } = this.state;
@@ -73,7 +83,9 @@ export default class EventDashboard extends Component {
                 </Grid.Column>
                 <Grid.Column width={6}>
                     <Button onClick={this.handleFormToggle} positive content="Create Event" />
-                    {isOpen && <EventForm cancelFormOpen={this.handleFormToggle} />}
+                    {isOpen && <EventForm createEvent={this.handleCreateEvent}
+                        cancelFormOpen={this.handleFormToggle} />}
+                    {/* handleFormToggle() will tigger immediately after page load so use it wisely */}
                 </Grid.Column>
             </Grid>
         )
