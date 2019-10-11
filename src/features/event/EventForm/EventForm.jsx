@@ -9,6 +9,13 @@ export default class EventForm extends Component {
         venue: '',
         hostedBy: ''
     }
+    componentDidMount() {
+        if (this.props.selectedEvent !== null) {
+            this.setState({
+                ...this.props.selectedEvent
+            })
+        }
+    }
     handleInputChange = ({ target: { name, value } }) => {
         this.setState({
             [name]: value
@@ -16,7 +23,12 @@ export default class EventForm extends Component {
     }
     handleFormSubmit = (event) => {
         event.preventDefault();
-        this.props.createEvent(this.state)
+        if (this.state.id) {
+            this.props.upadatedEvent(this.state)
+        } else {
+            this.props.createEvent(this.state)
+        }
+
         // console.log(this.state);
     }
     render() {
@@ -31,7 +43,8 @@ export default class EventForm extends Component {
                             name="title"
                             onChange={this.handleInputChange}
                             value={title}
-                            placeholder="Event Title" />
+                            placeholder="Event Title"
+                        />
                     </Form.Field>
                     <Form.Field>
                         <label>Event Date</label>
@@ -40,7 +53,8 @@ export default class EventForm extends Component {
                             onChange={this.handleInputChange}
                             value={date}
                             type="date"
-                            placeholder="Event Date" />
+                            placeholder="Event Date"
+                        />
                     </Form.Field>
                     <Form.Field>
                         <label>City</label>
@@ -48,7 +62,8 @@ export default class EventForm extends Component {
                             name="city"
                             onChange={this.handleInputChange}
                             value={city}
-                            placeholder="City event is taking place" />
+                            placeholder="City event is taking place"
+                        />
                     </Form.Field>
                     <Form.Field>
                         <label>Venue</label>
@@ -56,7 +71,8 @@ export default class EventForm extends Component {
                             name="venue"
                             onChange={this.handleInputChange}
                             value={venue}
-                            placeholder="Enter the Venue of the event" />
+                            placeholder="Enter the Venue of the event"
+                        />
                     </Form.Field>
                     <Form.Field>
                         <label>Hosted By</label>
@@ -64,7 +80,8 @@ export default class EventForm extends Component {
                             name="hostedBy"
                             onChange={this.handleInputChange}
                             value={hostedBy}
-                            placeholder="Enter the name of person hosting" />
+                            placeholder="Enter the name of person hosting"
+                        />
                     </Form.Field>
                     <Button positive type="submit">
                         Submit
